@@ -50,7 +50,7 @@ void insertMap(HashMap * map, char * key, void * value)
         {
             return;
         }
-        posicion++;
+        posicion =(posicion + 1) % map->capacity;
         if (posicion == posicion_og)
         {
             return;
