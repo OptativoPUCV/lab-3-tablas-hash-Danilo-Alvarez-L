@@ -67,10 +67,26 @@ void insertMap(HashMap * map, char * key, void * value)
     }
 }
 
-void enlarge(HashMap * map) {
+void enlarge(HashMap * map)
+{
     enlarge_called = 1; //no borrar (testing purposes)
 
+    Pair ** arreglo_antiguo = map->buckets;
+    long capacidad_antigua = map->capacity;
 
+    map->capacity *= 2;
+    map->buckets = (Pair **)calloc(map->capacity, sizeof(Pair *));
+    map->size = 0;
+
+    for (long i = 0 ; i < capacidad_antigua ; i++)
+    {
+        if (arreglo_antiguo[i] != NULL && arreglo_antiguo[i]->key != NULL)
+        {
+            insertMap(map, arreglo_antiguo[i]->key, arreglo_antiguo[i]->value);
+        }
+    }
+
+    free(arreglo_antiguo);
 }
 
 
@@ -144,5 +160,6 @@ Pair * nextMap(HashMap * map)
             return map->buckets[i];
         }
     }
+
     return NULL;
 }
